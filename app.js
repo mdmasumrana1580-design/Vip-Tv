@@ -215,7 +215,8 @@ function normalizeCategoryKey(value) {
   if (v === "BD" || v === "BANGLADESH") return "BD";
   if (v === "INDIA" || v === "INDIAN") return "INDIA";
   if (v === "OTHER" || v === "OTHERS") return "OTHER";
-  if (v === "MOVIE & SERIES" || v === "MOVIES & SERIES" || v === "MOVIE" || v === "MOVIES" || v === "SERIES") return "MOVIE & SERIES";
+  if (v === "MOVIE" || v === "MOVIES") return "MOVIE";
+  if (v === "MOVIE & SERIES" || v === "MOVIES & SERIES" || v === "SERIES") return "MOVIE & SERIES";
   return v;
 }
 
@@ -338,6 +339,9 @@ function render() {
     const searchOk = c.name.toLowerCase().includes(q);
     return categoryOk && searchOk;
   });
+  if (selectedCategory === "MOVIE" || selectedCategory === "ALL") {
+    list.unshift({name:"MOVIE", cat:"MOVIE", url:"http://103.112.150.230/#/movies", logo:"", external:true});
+  }
   visibleChannels = list;
 
   empty.hidden = list.length > 0;
@@ -361,6 +365,10 @@ function render() {
 
     el.addEventListener("click", function (e) {
       e.preventDefault();
+      if (c.external) {
+        window.open(c.url, "_blank", "noopener,noreferrer");
+        return;
+      }
       play(c, el, false, true);
     });
 
